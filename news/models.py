@@ -7,7 +7,8 @@ from account.models import CustomerUser
 class News(models.Model):
     title = models.CharField(max_length=255, verbose_name="عنوان خبر")
     author = models.ForeignKey(CustomerUser, on_delete=models.CASCADE, verbose_name="نویسنده خبر")
-    content = jmodels.jDateField(auto_now=True, verbose_name="تاریخ ساخت خبر")
+    content = models.TextField(verbose_name="متن خبر")
+    created_time = jmodels.jDateField(auto_now=True, verbose_name="تاریخ ساخت خبر")
 
     def __str__(self):
         return self.title

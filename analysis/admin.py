@@ -1,3 +1,7 @@
 from django.contrib import admin
+from analysis.models import *
 
-# Register your models here.
+
+@admin.register(Analysis)
+class AnalysisAdmin(admin.ModelAdmin):
+    list_display = ('title', 'description')

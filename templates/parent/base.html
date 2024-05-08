@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{{ media_url }}images/icons/logo.svg" rel="shortcut icon" type="image/x-icon"/>
+    <link href="{% static 'assets/css/styles.bundle.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'assets/plugins/slick/slick.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'assets/plugins/aos-master/src/aos.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'assets/plugins/apexcharts/apexcharts.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'assets/css/pages/landing-page-v2.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'assets/css/pages/sign-in-v2.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/pages/sign-up-v2.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    {% block style %}
+    	
+    {% endblock %}
+</head>
+<body>
+{% block content %}
+
+{% endblock %}
+<script src="{% static 'assets/js/pages/scripts.bundle.js' %}"></script>
+<script src="{% static 'assets/plugins/slick/slick.min.js' %}"></script>
+<script src="{% static 'assets/plugins/aos-master/src/aos.js' %}"></script>
+<script src="{% static 'assets/plugins/apexcharts/apexcharts.min.js' %}"></script>
+<script src="{% static 'assets/js/custom/custom-select.js' %}"></script>
+<script src="{% static 'assets/js/pages/landing-page-v2.js' %}"></script>
+<script src="{% static 'assets/js/custom/chart.js' %}"></script>
+<script src="{% static 'assets/js/custom/sidebar.js' %}"></script>
+<script src="{% static 'assets/js/pages/sign-in-page.js' %}"></script>
+<script src="{% static 'assets/js/pages/sign-up-page.js' %}"></script>
+{#<script src="{% static 'js/jquery-3.5.1.js' %}"></script>#}
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    {% if messages %}
+        {% for message in messages %}
+            toastr.{{ message.tags }}('{{ message }}')
+        {% endfor %}
+    {% endif %}
+</script>
+</body>
+</html>

@@ -36,7 +36,7 @@ class CustomerUser(AbstractBaseUser, PermissionsMixin):
     image = models.ImageField(upload_to='users/', verbose_name='عکس پروفایل کاربری', blank=True, null=True)
 
     register_date = jmodels.jDateField(default=jdatetime.date.today(), verbose_name='تاریخ ثبت نام')
-    active_code = models.CharField(max_length=10, blank=True, null=True, )
+    active_code = models.CharField(max_length=10, blank=True, null=True,verbose_name='کد تایید' )
     is_active = models.BooleanField(default=False, verbose_name='وضعیت کاربر')
 
     is_admin = models.BooleanField(default=False)
@@ -62,5 +62,3 @@ class CustomerUser(AbstractBaseUser, PermissionsMixin):
         return self.is_admin
 
 
-class SellerUser(CustomerUser):
-    pass

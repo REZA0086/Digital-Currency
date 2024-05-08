@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'comment.apps.CommentConfig',
     'main.apps.MainConfig',
     'news.apps.NewsConfig',
+    'analysis.apps.AnalysisConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
