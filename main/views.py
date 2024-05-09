@@ -1,6 +1,7 @@
 import requests
 from django.conf import settings
-from django.http import JsonResponse
+from django.contrib import messages
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 import requests
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -11,6 +12,8 @@ from comment.models import Comment
 from main.models import DigitalCurrency
 from comment.forms import CommentForm
 from news.models import News
+
+from main.forms import CurrencyForm
 
 
 def media_admin(request):
@@ -58,31 +61,39 @@ def get_currency(request):
 class IndexView(View):
     def get(self, request):
         context = {}
-        currency_change_request = request.GET.get('currency')
-
+        final_price = request.session.get('final_price')
+        context['final_price'] = final_price
         get_currency_data = get_currency(request)
         currency_list = get_currency_data['currency']
         for key, value in currency_list.items():
             DigitalCurrency.objects.create(name=key, current_price=value)
         digital_currency = DigitalCurrency.objects.all()[:10]
 
-        for key, value in currency_list.items():
-            if key == "BTC":
-                btc_price = value
-
-        for key, value in currency_list.items():
-            if key == str(currency_change_request):
-                context['price'] = value
-                print(context['price'])
         form = CommentForm()
         comments = Comment.objects.filter(is_active=True).order_by('-register_date')
         analysis = Analysis.objects.all().order_by('-created_time')
         news = News.objects.all().order_by('created_time')
 
+        form_currency = CurrencyForm()
         context['media_url'] = settings.MEDIA_URL
         context['digital_currency'] = digital_currency
         context['form'] = form
         context['comments'] = comments
         context['analysis'] = analysis
         context['news'] = news
+        context['form_currency'] = form_currency
         return render(request, 'index.html', context)
+
+    def post(self, request, *args, **kwargs):
+        currency_change_request = request.POST.get('currency')
+        print(currency_change_request)
+        get_currency_data = get_currency(request)
+        currency_list = get_currency_data['currency']
+
+        count = request.POST.get('count')
+        for key, value in currency_list.items():
+            if key == str(currency_change_request):
+                final_price = int(count) / float(value)
+                request.session['final_price'] = final_price
+                return JsonResponse({'final_price': final_price})
+        return JsonResponse({'final_price': None})

@@ -1,8 +1,8 @@
-{% extends 'parent/base.html' %}
+[i {% extends 'parent/base.html' %}
 {% load static %}
 {% block title %}
     index
-{% endblock %}  
+{% endblock %}
 
 {% block style %}
     <style id="apexcharts-css">
@@ -1026,12 +1026,13 @@
                     </p>
 
                 </div>
+
                 <div class="buy-sell-cards buy-sell-cards--v2 aos-init aos-animate" data-aos="zoom-in-up"
                      data-aos-delay="600">
                     <div class="buy-sell-cards__container">
-                        
+
                         <div class="tab-content" id="buySellTabContent">
-                            
+
                             <div class="tab-pane fade active show" id="sell-tab-pane" role="tabpanel"
                                  aria-labelledby="sell-tab" tabindex="0">
 
@@ -1039,8 +1040,13 @@
                                     <div class="d-block forms-purchase__box">
                                         <div class="forms-purchase">
                                             <div class="forms-group forms-group--value">
-                                                <input type="number" min="0" value="1"
-                                                       class="form-control forms-purchase__value">
+                                                <input
+                                                        type="number"
+                                                        min="0"
+                                                        value="1"
+                                                        class="form-control forms-purchase__value"
+                                                        name="count"
+                                                />
                                             </div>
                                             <div class="forms-purchase__line"></div>
                                             <div class="forms-group forms-group--purchase js-forms-group--purchase"
@@ -1066,7 +1072,7 @@
                                     <div class="d-block forms-purchase__box">
                                         <div class="forms-purchase">
                                             <div class="forms-group forms-group--value">
-                                               <p>Selected currency price: {{ price }}</p>
+                                                <p id="price"> {{ final_price }}</p>
                                             </div>
                                             <div class="forms-purchase__line"></div>
                                             <div class="forms-group forms-group--purchase js-forms-group--purchase"
@@ -1080,7 +1086,7 @@
                                                      src="{{ media_url }}images/icons/arrow-down.svg" alt="">
                                                 <div class="forms-group__dropdown js-forms-group__dropdown"
                                                      id="change1">
-                                                    <div onclick="Change('BTN')" class="forms-group__items active"
+                                                    <div onclick="Change('BTC')" class="forms-group__items active"
                                                          data-selected="btc">
                                                         <img class="fg-items__icon"
                                                              src="{{ media_url }}images/icons/logo-btc.svg" alt="">
@@ -1101,14 +1107,17 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <img src="{{ media_url }}images/Radio.svg" style="width: 100px;background-repeat: no-repeat"
+                                                 class="d-none" id="loading">
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -1418,19 +1427,26 @@
     <script src="{% static 'assets/js/jquery-3.5.1.js' %}"></script>
     <script>
         function Change(currency) {
-        $.ajax({
-            url: "{% url 'main:index' %}",
-            type: 'GET',
-            data: {currency: currency},
-            success: function(response) {
-                // Update the part of the page displaying the selected currency price
-                $('#price').text('Selected currency price: ' + response.price);
-            },
-            error: function(xhr, errmsg, err) {
-                // Handle error here
-                console.log(xhr.status + ": " + xhr.responseText); // log the error to the console
-            }
-        });
-    }
+            let count = document.querySelector("input[name=count]").value;
+            let loading = document.querySelector('#loading')
+            loading.classList.remove('d-none')
+
+            $.ajax({
+                url: "{% url 'main:index' %}",
+                type: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector("input[name='csrfmiddlewaretoken']").value
+                },
+                data: {currency: currency, count: count},
+                success: function (response) {
+                    $('#price').text(response.final_price);
+                    loading.classList.add(('d-none'));
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        }
     </script>
+
 {% endblock %}

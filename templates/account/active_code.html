@@ -1,6 +1,6 @@
 {% extends 'parent/base.html' %}
 {% block title %}
-    صفحه ورود
+    تایید کد
 {% endblock %}
 {% block style %}
     <style id="mttstyle">
@@ -119,18 +119,13 @@
     <div class="sign-in sign-in--v2">
         <div class="sign-in-card">
 
-            <form action="{% url 'account:login' %}" method="post" class="sign-in__forms">
+            <form action="{% url 'account:active_code' %}" method="post" class="sign-in__forms">
                 {% csrf_token %}
-                {{ form }}
-                <div class="remember-forgot-password aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                {{ form}}
 
-                    <a href="{% url 'account:recovery_pass' %}" class="forgot-password fb-sm">رمز عبور را فراموش کرده اید</a>
-                </div>
-                <input type="submit" class="btn btn-primary btn-pill btn-submit aos-init aos-animate"
-                       value="اکنون وارد شوید" data-aos="zoom-in-up" data-aos-delay="200">
-                <p class="fb-sm sign-up-info aos-init aos-animate" data-aos="fade-up" data-aos-delay="250">
-                    حساب کاربری ندارید؟ <a href="{% url 'account:register' %}" class="sign-up-link">ثبت نام رایگان</a>
-                </p>
+                <a href="{% url 'account:change_pass' %}"><input type="submit" class="btn btn-primary btn-pill btn-submit aos-init aos-animate"
+                       value="ثبت کد" data-aos="zoom-in-up" data-aos-delay="200"></a>
+                
             </form>
         </div>
         <div class="sign-in-banner">
