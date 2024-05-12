@@ -8,6 +8,7 @@ class DigitalCurrency(models.Model):
     full_name = models.CharField(max_length=100, verbose_name="نام کامل ارز دیجیتال",null=True,blank=True)
     symbol = models.ImageField(upload_to='media/symbol/', verbose_name="نماد ارز دیجیتال",null=True, blank=True)
     current_price = models.DecimalField(max_digits=20, decimal_places=10, verbose_name="قیمت فعلی ارز",null=True, blank=True)
+    changePrice = models.DecimalField(max_digits=20, decimal_places=5, verbose_name="تغییرات قیمت",default=0, null=True, blank=True)
 
     def __str__(self):
         return self.name
